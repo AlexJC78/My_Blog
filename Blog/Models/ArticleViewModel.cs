@@ -16,14 +16,24 @@ namespace Blog.Models
 
         [Required]
         public string Content { get; set; }
+
         public string AuthorId { get; set; }
 
         public int CategoryId { get; set; }
 
         public string Tags { get; set; }
 
+        public string NewComment { get; set; }
+
         public ICollection<Article> Articles { get; set; }
 
         public List<Category> Categories { get; set; }
+
+        public ICollection<Comment> Comments { get; set; }
+
+        public ArticleViewModel()
+        {
+            this.Comments = new HashSet<Comment>();
+        }
     }
 }
