@@ -5,35 +5,64 @@
 }
 
 <div class="container">
-    <article>
-        <header>
-            <h2>
-                @Model.Title
-            </h2>
-        </header>
-        <p>
-            @Model.Content
-        </p>
-        <small class="author">
-            --author @Model.Author.FullName
-        </small>
-        <footer>
-            <div class="pull-left">
-                @foreach (var tag in Model.Tags)
-                {
-                    <span> @Html.ActionLink(tag.Name, "List", "Tag", new { @id = tag.Id }, new { @class = "btn btn-default btn-xs" })</span>
-                }
-            </div>
-            <div class="pull-right">
-                @if (User.IsInRole("Admin") || Model.IsAuthor(User.Identity.Name))
-                  {
-                    @Html.ActionLink("Edit", "Edit", "Article", new { @id = Model.Id }, new { @class = "btn btn-success btn-xs" })
-                    @Html.ActionLink("Delete", "Delete", "Article", new { @id = Model.Id }, new { @class = "btn btn-danger btn-xs" })                  
-                  }
+    <div class="col-sm-12">
+            <header>
+                <h2>
+                    @Model.Title
+                </h2>
+            </header>
+            <p>
+                @Model.Content
+            </p>
+            <small class="author">
+                --author @Model.Author.FullName
+            </small>
+            <footer>
+                <div class="pull-left">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <span> @Html.ActionLink(tag.Name, "List", "Tag", new { @id = tag.Id }, new { @class = "btn btn-default btn-xs" })</span>
+                    }
+                </div>
+                <div class="pull-right">
+                    @if (User.IsInRole("Admin") || Model.IsAuthor(User.Identity.Name))
+                    {
+                        @Html.ActionLink("Edit", "Edit", "Article", new { @id = Model.Id }, new { @class = "btn btn-success btn-xs" })
+                        @Html.ActionLink("Delete", "Delete", "Article", new { @id = Model.Id }, new { @class = "btn btn-danger btn-xs" })
+                    }
 
-                @Html.ActionLink("Back", "Index", "Article", null, new { @class = "btn btn-default btn-xs" })                
-            </div>         
-        </footer>
-    </article>
+                    @Html.ActionLink("Back", "Index", "Home", null, new { @class = "btn btn-default btn-xs" })
+                </div>
+                <div class="pull-left">
+                         <div class="col-sm-4">
+                            <div class="pull-left">
+                                @Html.ActionLink("Comment", "CreateComment", "Article", new { @id = Model.Id }, new { @class = "btn btn-success btn-xs" })
+                            </div>
+                        </div>
+                </div>
+                    <div class="pull-left">
+                        <div class="container">
+                            <div class="form-group">
+                                <hr />
+                                <h4>
+                                    --All Comments 
+                                </h4>
+                                <hr />
+                                @foreach (var comment in Model.Comments)
+                                {
+
+                                    <p>@comment.Content</p>
+                                    <small class="author">
+                                        --author @comment.FullName
+                                        --date and time @comment.DateAndTime
+                                    </small>
+                                    <hr />
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+            </footer>
+    </div>
 </div>
-<hr />
