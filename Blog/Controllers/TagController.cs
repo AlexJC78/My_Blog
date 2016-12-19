@@ -1,37 +1,32 @@
-﻿using Blog.Models;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Net;
 using System.Web;
-using System.Web.Mvc;
 
-namespace Blog.Controllers
+namespace Blog.Models
 {
-    public class TagController : Controller
+    public class Tag
     {
-        // GET: Tag
-        public ActionResult List(int? id)
+        private ICollection<Article> articles;
+
+        public Tag()
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            this.articles = new HashSet<Article>();
+        }
 
-            using (var database = new BlogDbContext())
-            {
-                // Get articles from database
-                var articles = database.Tags
-                    .Include(t => t.Articles.Select(a => a.Tags))
-                    .Include(t => t.Articles.Select(a => a.Author))
-                    .FirstOrDefault(t => t.Id == id)
-                    .Articles
-                    .ToList();
+        [Key]
+        public int Id { get; set; }
 
-                // Return the view
-                return View(articles);
-            }               
+        [StringLength(20)]
+        [Index(IsUnique = true)]
+        public string Name { get; set; }
+
+        public virtual ICollection<Article> Articles
+        {
+            get { return this.articles; }
+            set { this.articles = value; }
         }
     }
 }
